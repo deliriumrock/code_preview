@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Path Editor</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<script type="text/javascript" src='http://playtomax.com/games/tap_the_candy/game.js'></script>
+    <script type="text/javascript" src='http://code.jquery.com/jquery-2.1.1.min.js'></script>
+    <script type="text/javascript" src='js/bootstrap.min.js'></script>
+    <script type="text/javascript" src='js/jasny-bootstrap.min.js'></script>
+    <script type="text/javascript" src='js/editor_init.js'></script>
+    <script type="text/javascript" src='js/editor.js'></script>
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/jasny-bootstrap.css">
+    <link rel="stylesheet" href="css/editor.css">
+
+</head>
+
+<body style="margin: 0px; padding: 0px; background-color: #BBBBBB;">
+
+    <header class="navbar navbar-default navbar-fixed-top bs-docs-nav navbar-inverse" role="banner">
+        <div class="container">
+            <div class="navbar-header">
+                <b><a class="navbar-brand" href="#">Path Editor</a></b>
+            </div>
+            <form class="navbar-form navbar-left">
+                <button type="button" class="btn btn-default" onclick="startPath();" title="Начать новый путь"><span class="glyphicon glyphicon-download"></span></button>
+                <button type="button" id="set-bezier-path" class="btn btn-default" onclick="setBezierPath()" title="Путь в кривых Безье"><span class="glyphicon glyphicon-repeat"></span></button>
+                <div class="btn-group" style="width: 110px;">
+                    <select id="path-switch" class="form-control"></select>
+                </div>
+                <button type="button" id="move-path" class="btn btn-default" onclick="movePath(this);" title="Переместить текущий путь"><span class="glyphicon glyphicon-transfer"></span></button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" onclick="flipPath(FLIP_HORIZONTAL);" title="Скопировать и перевернуть выбранный путь по горизонтали"><span class="glyphicon glyphicon-resize-horizontal"></span> h</button>
+                    <button type="button" class="btn btn-default" onclick="flipPath(FLIP_VERTICAL);" title="Скопировать и перевернуть выбранный путь по вертикали"><span class="glyphicon glyphicon-resize-vertical"></span> v</button>
+                </div>
+                <div class="spacer"></div>
+                <div class="btn-group">
+                    <button type="button" id="add-point" class="btn btn-default" onclick="addPoint(this);" title="Добавить точку"><span class="glyphicon glyphicon-record"></span></button>
+                    <button type="button" class="btn btn-default" onclick="deletePoint();" title="Удалить точку"><span class="glyphicon glyphicon-remove-circle"></span></button>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" onclick="alinePoint(ALINE_X);" title="Выровнять следующую за текущей точку по оси X"><span class="glyphicon glyphicon-retweet"></span> x</button>
+                    <button type="button" class="btn btn-default" onclick="alinePoint(ALINE_Y);" title="Выровнять следующую за текущей точку по оси Y"><span class="glyphicon glyphicon-retweet"></span> y</button>
+                </div>
+                <button type="button" class="btn btn-default" onclick="mergeStartAndFinish();" title="Совместить начальную и конечную точки пути"><span class="glyphicon glyphicon-refresh"></span></button>
+                <button type="button" class="btn btn-default" onclick="mergePointers();" title="Совместить выбранные точки разных путей"><span class="glyphicon glyphicon-resize-small"></span></button>
+                <div class="form-group" style="width: 97px;">
+                    <div class="input-group">
+                        <input type="text" id="pointer-z-index" class="form-control" placeholder="z-index" title="Z-Index объекта в данной точке" >
+                        <span class="input-group-btn">
+                            <button type="button" id="set-pointer-z-index" class="btn btn-default" onclick="setPointerZIndex();" title="Z-Index объекта в данной точке"><span class="glyphicon glyphicon-random"></span></button>
+                        </span>
+                    </div>
+                </div>
+                <button type="button" id="pointer-visible" class="btn btn-default" onclick="setPointerVisible();" title="Видимость объекта в данной точке"><span class="glyphicon glyphicon-eye-open"></span></button>
+                <button type="button" id="pointer-hittest" class="btn btn-default" onclick="setPointerHitTest();" title="Объект реагирует/не реагирует на контакт в этой точке"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+<!--                <div class="spacer"></div>
+                <div class="form-group" style="width: 97px;">
+                    <div class="input-group">
+                        <input type="text" id="placesCount" class="form-control" placeholder="количество" title="Количество необходимых промежуточных позиций" >
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" onclick="calculate();" title="Вычислить промежуточные точки пути"><span class="glyphicon glyphicon-screenshot"></span></button>
+                        </span>
+                    </div>
+                </div>-->
+            </form>
+            <div class="navbar-right padding-top-10">
+                <button type="button" class="btn btn-default" onclick="refreshPointers();" title="Удалить все пути"><span class="glyphicon glyphicon-trash"></span></button>
+            </div>
+            <div class="clearfix"></div>
+            <form class="navbar-form navbar-left">
+                <div class="btn-group">
+                    <button type="button" id="set-gun-flag" class="btn btn-default" onclick="setGunPoint()" title="Установить пушку"><span class="glyphicon glyphicon-map-marker"></span></button>
+                    <button type="button" id="delete-gun-flag" class="btn btn-default" onclick="deleteGunPointFlag()" title="Удалить пушку"><span class="glyphicon glyphicon-remove"></span></button>
+                </div>
+                <button type="button" id="move-gun-point" class="btn btn-default" onclick="moveGunPointMode(this);" title="Переместить выбранную точку пушки"><span class="glyphicon glyphicon-move"></span></button>
+            </form>
+            <div class="navbar-right padding-top-10">
+                <button class="btn btn-default margin-right0 margin-top-10" onclick="switchScreenMode();" title="Ланшафтный/портретный режим"><span class="glyphicon glyphicon-unchecked"></span></button>
+                <div class="spacer"></div>
+                <div class="fileupload fileupload-new margin-right0 margin-top-10" data-provides="fileupload" style="margin-bottom: 0; display: inline-block;">
+                    <div class="fileupload-preview thumbnail" style="width: 960px; height: 640px; position: absolute; top: -663px; left: 0px; background: none; border: 0px solid white; z-index: 0; padding: 0; border-radius: 0;"><img src="" id="backImage" width="960" height="640" alt=""></div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-file btn-default margin-right0 margin-top-10" title="Выбрать изображение уровня"><span class="fileupload-new glyphicon glyphicon-picture"></span><span class="fileupload-exists glyphicon glyphicon-picture"></span><input type="file" name="file" id="file-name" /></span></button>
+                        <button type="button" id="remove-file" class="btn btn-file btn-default fileupload-exists margin-right0 margin-top-10" data-dismiss="fileupload" title="Удалить изображение" style="display: block"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-default margin-right0 margin-top-10" onclick="loadJSON();" title="Загрузить JSON"><span class="glyphicon glyphicon-open"></span></button>
+                    <button type="submit" class="btn btn-default margin-right0 margin-top-10" onclick="generateJSON();" title="Сгенерировать JSON"><span class="glyphicon glyphicon-save"></span></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="conteiner-block" class="container bs-docs-container">
+        <canvas id="screen" width='960' height='640' style="display: block; border: 1px solid #666666; margin: 120px auto 20px; z-index: 10; position: relative;"></canvas>
+        <div class="panel panel-default" style="margin: 0 auto 20px; width: 960px; position: relative">
+            <div class="panel-body">
+                <p>JSON:</p>
+                <textarea id="level-json" class="form-control" rows="10"></textarea>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

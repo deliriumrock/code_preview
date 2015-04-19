@@ -1,0 +1,32 @@
+.navbar { height: 100px; }
+.navbar-form { padding: 0; }
+.container { position: relative; }
+.navbar-header { position: absolute; left: -80px; top: 8px; width: 80px; font-size: 24px !important; line-height: 30px !important; }
+.btn-default { margin-right: 2px; color: #BEBEBE; background-color: #494949; border-color: #222222; }
+.btn-group { margin-right: 2px; }
+.btn-group .btn-default { margin-right: 0px; }
+.form-control { background-color: #A8A8A8; border: 1px solid #222222; }
+.margin-right { margin-right: 30px; }
+.margin-right0 { margin-right: 0px; }
+.padding-top-10 { padding: 8px 0; }
+.container { max-width: 990px; }
+.fileupload-preview > img { /*display: none !important;*/ }
+.spacer { width: 7px; display: inline-block; }
+
+.vertical-text {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+
+  /* also accepts left, right, top, bottom coordinates; not required, but a good idea for styling */
+  -webkit-transform-origin: 50% 50%;
+  -moz-transform-origin: 50% 50%;
+  -ms-transform-origin: 50% 50%;
+  -o-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+
+  /* Should be unset in IE9+ I think. */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}

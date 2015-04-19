@@ -1,2 +1,2 @@
 # code_preview
-preview code
+code preview
